@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+service MessageBroker {
+  // Enables clients to send a message to the server. The server will add a unqiue id and send it back.
+  rpc SendMessage (RawMessage) returns (Message) {}
+
+  // Get all topics from the server
+  rpc GetTopics (Empty) returns (Topics) {}
+
+  // Get all messages for a specific topic
+  rpc GetMessages (Topic) returns (stream Message) {}
+}
+
+// Topics are used to categorize messages
+message Topic {
+  string value = 1;
+}
+
+// Collection of topics
+message Topics {
+  repeated Topic topics = 1;
+}
+
+message RawMessage {
+  string content = 1;
+  Topic topic = 2;
+}
+
+message Message {
+  string id = 1;
+  string content = 2;
+  Topic topic = 3;
+}
+
+message Empty {
+}
